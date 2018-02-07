@@ -3,24 +3,26 @@
 from pybass import *
 from threading import Thread
 import openstudioAudioThread
+import unicodedata
 
 class openstudioAudioInstance():
 
     def __init__(self,app):
         self.app = app
         BASS_Init(-1, 44100, 0, 0, 0)
-        self.handle = BASS_StreamCreateFile(False, b"test.mp3", 0, 0, 0)
-        self.thread_1 = openstudioAudioThread.openstudioAudioChannel(self.handle, self.app)
 
     def playAudio(self):
-        if(self.thread_1.is_alive() == 0):
-            self.thread_1.start()
-            print('Start thread')
-        else:
-            BASS_ChannelPlay(self.handle, False)
+
+        #if not BASS_ChannelIsActive(self.thread_1.handle):
+        self.thread_1 = openstudioAudioThread.openstudioAudioChannel(self.app)
+        self.thread_1.path = self.app.getPath().encode("utf-8")
+        self.thread_1.start()
+
+        print('Start thread')
 
     def stopAudio(self):
-        BASS_ChannelStop(self.handle)
+        self.thread_1.stop()
+        self.thread_1 = None
 
     def rewindAudio(self):
-        BASS_ChannelSetPosition(self.handle, 0, BASS_POS_BYTE)
+        BASS_ChannelSetPosition(self.thread_1.handle, 0, BASS_POS_BYTE)
