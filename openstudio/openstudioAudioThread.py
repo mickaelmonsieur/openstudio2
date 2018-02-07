@@ -4,9 +4,9 @@ from pybass import *
 from threading import Thread
 import time
 
-@SYNCPROC
-def onEndPlay(handle, buffer, length, user):
-    print("playing finished.")
+#@SYNCPROC
+#def onEndPlay(handle, buffer, length, user):
+#    print("playing finished.")
 
 class openstudioAudioChannel(Thread):
 
@@ -17,7 +17,7 @@ class openstudioAudioChannel(Thread):
 
     def run(self):
 
-        BASS_ChannelSetSync(self.handle, BASS_SYNC_END, 0, onEndPlay, 0)
+        #BASS_ChannelSetSync(self.handle, BASS_SYNC_END, 0, onEndPlay, 0)
         BASS_ChannelPlay(self.handle, False)
 
         channel_length = BASS_ChannelGetLength(self.handle, BASS_POS_BYTE)
@@ -30,3 +30,4 @@ class openstudioAudioChannel(Thread):
             time.sleep(.02)
 
         BASS_Free()
+        self.stop()

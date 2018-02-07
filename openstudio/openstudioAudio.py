@@ -9,11 +9,15 @@ class openstudioAudioInstance():
     def __init__(self,app):
         self.app = app
         BASS_Init(-1, 44100, 0, 0, 0)
-        self.handle = BASS_StreamCreateFile(False, b"X_Perience_-_Magic_Fields.mp3", 0, 0, 0)
+        self.handle = BASS_StreamCreateFile(False, b"test.mp3", 0, 0, 0)
+        self.thread_1 = openstudioAudioThread.openstudioAudioChannel(self.handle, self.app)
 
     def playAudio(self):
-        thread_1 = openstudioAudioThread.openstudioAudioChannel(self.handle, self.app)
-        thread_1.start()
+        if(self.thread_1.is_alive() == 0):
+            self.thread_1.start()
+            print('Start thread')
+        else:
+            BASS_ChannelPlay(self.handle, False)
 
     def stopAudio(self):
         BASS_ChannelStop(self.handle)
