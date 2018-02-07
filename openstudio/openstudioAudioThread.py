@@ -3,7 +3,6 @@
 from pybass import *
 from threading import Thread
 import time
-#import openstudioGUI
 
 @SYNCPROC
 def onEndPlay(handle, buffer, length, user):
@@ -11,9 +10,10 @@ def onEndPlay(handle, buffer, length, user):
 
 class openstudioAudioChannel(Thread):
 
-    def __init__(self, handle):
+    def __init__(self, handle, app):
         Thread.__init__(self)
         self.handle = handle
+        self.app = app
 
     def run(self):
 
@@ -25,12 +25,8 @@ class openstudioAudioChannel(Thread):
 
         while channel_position < channel_length:
             channel_position = BASS_ChannelGetPosition(self.handle, BASS_POS_BYTE)
-            value = 'Play second %s of song' % str(int(BASS_ChannelBytes2Seconds(self.handle, channel_position)))
-            #openstudio = openstudioGUI.MainFrame(None)
-            #openstudio.position.SetLabel('test')
-            sys.stdout.write('%s\r' % value.ljust(20))
-
-            sys.stdout.flush()
-            time.sleep(1)
+            value = '%.2f' % BASS_ChannelBytes2Seconds(self.handle, channel_position)
+            self.app.updateTiming(value)
+            time.sleep(.02)
 
         BASS_Free()

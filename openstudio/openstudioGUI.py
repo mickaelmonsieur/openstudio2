@@ -29,6 +29,9 @@ class MainFrame ( wx.Frame ):
 		self.stopSong1 = wx.Button( self, wx.ID_ANY, u"Stop", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer1.Add( self.stopSong1, 0, wx.ALL, 5 )
 		
+		self.rewingSong1 = wx.Button( self, wx.ID_ANY, u"Rewind", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer1.Add( self.rewingSong1, 0, wx.ALL, 5 )
+		
 		self.position = wx.StaticText( self, wx.ID_ANY, u"00:00:00", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.position.Wrap( -1 )
 		bSizer1.Add( self.position, 0, wx.ALL, 5 )
@@ -52,6 +55,7 @@ class MainFrame ( wx.Frame ):
 		# Connect Events
 		self.playSong1.Bind( wx.EVT_BUTTON, self.play )
 		self.stopSong1.Bind( wx.EVT_BUTTON, self.stop )
+		self.rewingSong1.Bind( wx.EVT_BUTTON, self.rewind )
 		self.Bind( wx.EVT_MENU, self.close, id = self.menuClose.GetId() )
 	
 	def __del__( self ):
@@ -63,6 +67,9 @@ class MainFrame ( wx.Frame ):
 		event.Skip()
 	
 	def stop( self, event ):
+		event.Skip()
+	
+	def rewind( self, event ):
 		event.Skip()
 	
 	def close( self, event ):
