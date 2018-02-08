@@ -30,9 +30,10 @@ class openstudioAudioChannel(threading.Thread):
         while channel_position < channel_length:
             if not self.Terminated:
                 channel_position = BASS_ChannelGetPosition(self.handle, BASS_POS_BYTE)
-                value = '%.2f' % BASS_ChannelBytes2Seconds(self.handle, channel_position)
-                self.app.updateTiming(value)
-                time.sleep(.02)
+                #value = '%.2f' % BASS_ChannelBytes2Seconds(self.handle, channel_position)
+                self.app.updatePosition(BASS_ChannelBytes2Seconds(self.handle, channel_position))
+                self.app.updateCountdown(BASS_ChannelBytes2Seconds(self.handle, channel_length-channel_position))
+                time.sleep(.2)
             else:
                 BASS_ChannelStop(self.handle)
                 BASS_StreamFree(self.handle)

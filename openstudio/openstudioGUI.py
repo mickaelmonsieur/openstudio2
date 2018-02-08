@@ -39,6 +39,10 @@ class MainFrame ( wx.Frame ):
 		self.position.Wrap( -1 )
 		bSizer3.Add( self.position, 0, wx.ALL, 5 )
 		
+		self.countdown = wx.StaticText( self, wx.ID_ANY, u"00:00:00", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.countdown.Wrap( -1 )
+		bSizer3.Add( self.countdown, 0, wx.ALL, 5 )
+		
 		
 		bSizer1.Add( bSizer3, 1, wx.EXPAND, 5 )
 		

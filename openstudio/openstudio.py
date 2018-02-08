@@ -35,8 +35,15 @@ class MainFrame(openstudioGUI.MainFrame):
     def close(self,event):
         sys.exit(0)
 
-    def updateTiming(self,timing):
-        self.position.SetLabel(timing)
+    def updatePosition(self,position):
+        m, s = divmod(position, 60)
+        h, m = divmod(m, 60)
+        self.position.SetLabel("%02d:%02d:%02d" % (h, m, s))
+
+    def updateCountdown(self,countdown):
+        m, s = divmod(countdown, 60)
+        h, m = divmod(m, 60)
+        self.countdown.SetLabel("%02d:%02d:%02d" % (h, m, s))
 
     def getPath(self):
         currentId = self.songs.GetValue(self.songs.GetSelectedRow(), 0)
