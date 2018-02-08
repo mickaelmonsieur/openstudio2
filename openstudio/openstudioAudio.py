@@ -13,11 +13,10 @@ class openstudioAudioInstance():
 
     def playAudio(self):
 
-        #if not BASS_ChannelIsActive(self.thread_1.handle):
         self.thread_1 = openstudioAudioThread.openstudioAudioChannel(self.app)
         self.thread_1.path = self.app.getPath().encode("utf-8")
         self.thread_1.start()
-
+        #print(self.thread_1.path)
         print('Start thread')
 
     def stopAudio(self):

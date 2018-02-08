@@ -43,9 +43,6 @@ class MainFrame ( wx.Frame ):
 		bSizer1.Add( bSizer3, 1, wx.EXPAND, 5 )
 		
 		self.songs = wx.dataview.DataViewListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 1000,600 ), 0 )
-		self.songsColumn1 = self.songs.AppendTextColumn( u"Artist" )
-		self.songsColumn2 = self.songs.AppendTextColumn( u"Title" )
-		self.songsColumn3 = self.songs.AppendTextColumn( u"Duration" )
 		bSizer1.Add( self.songs, 0, wx.ALL, 5 )
 		
 		

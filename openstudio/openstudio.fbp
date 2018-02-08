@@ -517,24 +517,6 @@
                         <event name="OnSetFocus"></event>
                         <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
-                        <object class="dataViewListColumn" expanded="1">
-                            <property name="label">Artist</property>
-                            <property name="name">songsColumn1</property>
-                            <property name="permission">protected</property>
-                            <property name="type">Text</property>
-                        </object>
-                        <object class="dataViewListColumn" expanded="1">
-                            <property name="label">Title</property>
-                            <property name="name">songsColumn2</property>
-                            <property name="permission">protected</property>
-                            <property name="type">Text</property>
-                        </object>
-                        <object class="dataViewListColumn" expanded="1">
-                            <property name="label">Duration</property>
-                            <property name="name">songsColumn3</property>
-                            <property name="permission">protected</property>
-                            <property name="type">Text</property>
-                        </object>
                     </object>
                 </object>
             </object>
