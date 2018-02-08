@@ -55,10 +55,19 @@ class MainFrame ( wx.Frame ):
 		self.statusBar1 = self.CreateStatusBar( 1, wx.STB_SIZEGRIP, wx.ID_ANY )
 		self.menu = wx.MenuBar( 0 )
 		self.menuFile = wx.Menu()
+		self.menuImport = wx.MenuItem( self.menuFile, wx.ID_ANY, u"Import file", wx.EmptyString, wx.ITEM_NORMAL )
+		self.menuFile.Append( self.menuImport )
+		
 		self.menuClose = wx.MenuItem( self.menuFile, wx.ID_ANY, u"Close", wx.EmptyString, wx.ITEM_NORMAL )
 		self.menuFile.Append( self.menuClose )
 		
 		self.menu.Append( self.menuFile, u"File" ) 
+		
+		self.menuView = wx.Menu()
+		self.menuRefresh = wx.MenuItem( self.menuView, wx.ID_ANY, u"Refresh", wx.EmptyString, wx.ITEM_NORMAL )
+		self.menuView.Append( self.menuRefresh )
+		
+		self.menu.Append( self.menuView, u"View" ) 
 		
 		self.SetMenuBar( self.menu )
 		
@@ -69,7 +78,9 @@ class MainFrame ( wx.Frame ):
 		self.playSong1.Bind( wx.EVT_BUTTON, self.play )
 		self.stopSong1.Bind( wx.EVT_BUTTON, self.stop )
 		self.rewingSong1.Bind( wx.EVT_BUTTON, self.rewind )
+		self.Bind( wx.EVT_MENU, self.importFile, id = self.menuImport.GetId() )
 		self.Bind( wx.EVT_MENU, self.close, id = self.menuClose.GetId() )
+		self.Bind( wx.EVT_MENU, self.refresh, id = self.menuRefresh.GetId() )
 	
 	def __del__( self ):
 		pass
@@ -85,7 +96,59 @@ class MainFrame ( wx.Frame ):
 	def rewind( self, event ):
 		event.Skip()
 	
+	def importFile( self, event ):
+		event.Skip()
+	
 	def close( self, event ):
+		event.Skip()
+	
+	def refresh( self, event ):
+		event.Skip()
+	
+
+###########################################################################
+## Class ImportFrame
+###########################################################################
+
+class ImportFrame ( wx.Frame ):
+	
+	def __init__( self, parent ):
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Import files", pos = wx.DefaultPosition, size = wx.Size( 804,261 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		
+		wSizer1 = wx.WrapSizer( wx.VERTICAL )
+		
+		bSizer5 = wx.BoxSizer( wx.HORIZONTAL )
+		
+		self.fileinfo = wx.StaticText( self, wx.ID_ANY, u"Select file:", wx.Point( -1,-1 ), wx.DefaultSize, 0 )
+		self.fileinfo.Wrap( -1 )
+		bSizer5.Add( self.fileinfo, 0, wx.ALL, 5 )
+		
+		self.filePicker = wx.FilePickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Select a file", u"*.mp2;*.mp3", wx.DefaultPosition, wx.DefaultSize, wx.FLP_DEFAULT_STYLE )
+		bSizer5.Add( self.filePicker, 0, wx.ALL, 5 )
+		
+		
+		wSizer1.Add( bSizer5, 1, wx.EXPAND, 5 )
+		
+		self.importBtn = wx.Button( self, wx.ID_ANY, u"Import", wx.DefaultPosition, wx.DefaultSize, 0 )
+		wSizer1.Add( self.importBtn, 0, wx.ALL, 5 )
+		
+		
+		self.SetSizer( wSizer1 )
+		self.Layout()
+		
+		self.Centre( wx.BOTH )
+		
+		# Connect Events
+		self.importBtn.Bind( wx.EVT_BUTTON, self.importFile )
+	
+	def __del__( self ):
+		pass
+	
+	
+	# Virtual event handlers, overide them in your derived class
+	def importFile( self, event ):
 		event.Skip()
 	
 

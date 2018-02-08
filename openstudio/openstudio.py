@@ -11,8 +11,8 @@ class MainFrame(openstudioGUI.MainFrame):
     #constructor
     def __init__(self,parent):
         #initialize parent class
-        print (sys.version)
         openstudioGUI.MainFrame.__init__(self,parent)
+        print (sys.version)
         self.audioWrapper_1 = openstudioAudio.openstudioAudioInstance(self)
         self.con = lite.connect('openstudio.db')
         self.songsColumn1 = self.songs.AppendTextColumn( u"ID", 0, width=50 )
@@ -66,6 +66,27 @@ class MainFrame(openstudioGUI.MainFrame):
                     break
 
                 self.songs.AppendItem( [str(row[0]),row[1],row[2],str(row[3]) ])
+
+    def importFile(self,event):
+        frame = ImportFrame(None)
+        frame.Show(True)
+
+    def refresh(self,event):
+        self.songs.DeleteAllItems()
+        self.getSongs()
+
+class ImportFrame(openstudioGUI.ImportFrame):
+
+    def __init__(self,parent):
+        openstudioGUI.ImportFrame.__init__(self,parent)
+        self.con = lite.connect('openstudio.db')
+
+    def importFile(self,event):
+        cur = self.con.cursor()
+        cur.execute("""INSERT INTO song(artistId,title,duration,filename) VALUES(?, ?, ?, ?)""", (1, "test", 200, self.filePicker.GetPath()))
+        id = cur.lastrowid
+        print('Created with Id: %d' % id)
+        self.con.commit()
 
 #mandatory in wx, create an app, False stands for not deteriction stdin/stdout
 #refer manual for details
