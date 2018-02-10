@@ -49,7 +49,7 @@ class MainFrame(openstudioGUI.MainFrame):
     def getPath(self):
         currentId = self.songs.GetValue(self.songs.GetSelectedRow(), 0)
         cur = self.con.cursor()
-        cur.execute('SELECT filename FROM song WHERE songId=?', currentId)
+        cur.execute('SELECT filename FROM song WHERE songId=?', (currentId,))
         return cur.fetchone()[0]
 
     def getSongs(self):
@@ -82,29 +82,50 @@ class ImportFrame(openstudioGUI.ImportFrame):
     def __init__(self,parent):
         openstudioGUI.ImportFrame.__init__(self,parent)
         self.con = lite.connect('openstudio.db')
+        self.con.text_factory = str
 
     def importFile(self,event):
         if self.filePicker.GetPath():
             audio = MP3(self.filePicker.GetPath())
-            artist = str(audio["TPE1"])
-            cur = self.con.cursor()
-            artistId=self.getArtistId(artist)
 
-            if not artistId:
-                print artist
-                print type(artist)
-                cur.execute("""INSERT INTO artist(name) VALUES(?)""", (artist,))
-                artistId = cur.lastrowid
-                print('Artist created with Id: %d' % artistId)
+            if "TPE1" in audio and "TIT2" in audio:
+                artist = str(audio["TPE1"])
+                title = str(audio["TIT2"])
+                cur = self.con.cursor()
+                artistId=self.getArtistId(artist)
+
+                if not artistId:
+                    print artist
+                    print type(artist)
+                    cur.execute("""INSERT INTO artist(name) VALUES(?)""", (artist,))
+                    artistId = cur.lastrowid
+                    print('Artist created with Id: %d' % artistId)
+                else:
+                    print('Artist exists with Id: %d' % artistId)
+
+                cur.execute("""INSERT INTO song(artistId,title,duration,filename) VALUES(?, ?, ?, ?)""", (artistId, title, "%.2f" % audio.info.length, self.filePicker.GetPath()))
+                id = cur.lastrowid
+                if id:
+                    print('Song created with Id: %d' % id)
+                    self.Info('Song created with Id: %d' % id)
+                    self.con.commit()
+                else:
+                    self.Warn("Unknown error.")
             else:
-                print('Artist exists with Id: %d' % artistId)
-
-            cur.execute("""INSERT INTO song(artistId,title,duration,filename) VALUES(?, ?, ?, ?)""", (artistId, str(audio["TIT2"]), "%.2f" % audio.info.length, self.filePicker.GetPath()))
-            id = cur.lastrowid
-            print('Song created with Id: %d' % id)
-            self.con.commit()
+                print "Artist or title error. Check ID2 tags."
+                self.Warn("Artist or title error. Check ID2 tags.")
         else:
             print "No file selected!"
+
+    def Warn(parent, message, caption = 'Error!'):
+        dlg = wx.MessageDialog(parent, message, caption, wx.OK | wx.ICON_ERROR)
+        dlg.ShowModal()
+        dlg.Destroy()
+
+    def Info(parent, message, caption = 'OpenStudio 2'):
+        dlg = wx.MessageDialog(parent, message, caption, wx.OK | wx.ICON_INFORMATION)
+        dlg.ShowModal()
+        dlg.Destroy()
 
     def getArtistId(self, name):
         cur = self.con.cursor()
