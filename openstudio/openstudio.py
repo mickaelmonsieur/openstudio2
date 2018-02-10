@@ -95,8 +95,6 @@ class ImportFrame(openstudioGUI.ImportFrame):
                 artistId=self.getArtistId(artist)
 
                 if not artistId:
-                    print artist
-                    print type(artist)
                     cur.execute("""INSERT INTO artist(name) VALUES(?)""", (artist,))
                     artistId = cur.lastrowid
                     print('Artist created with Id: %d' % artistId)
