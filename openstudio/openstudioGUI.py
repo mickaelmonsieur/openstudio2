@@ -113,9 +113,9 @@ class MainFrame ( wx.Frame ):
 class ImportFrame ( wx.Frame ):
 	
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Import files", pos = wx.DefaultPosition, size = wx.Size( 804,261 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Import files", pos = wx.DefaultPosition, size = wx.Size( 300,110 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.STAY_ON_TOP|wx.TAB_TRAVERSAL )
 		
-		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetSizeHints( wx.Size( 300,110 ), wx.Size( 300,110 ) )
 		
 		wSizer1 = wx.WrapSizer( wx.VERTICAL )
 		
@@ -131,8 +131,16 @@ class ImportFrame ( wx.Frame ):
 		
 		wSizer1.Add( bSizer5, 1, wx.EXPAND, 5 )
 		
+		bSizer4 = wx.BoxSizer( wx.HORIZONTAL )
+		
+		
+		bSizer4.Add( ( 0, 0), 1, wx.EXPAND, 0 )
+		
 		self.importBtn = wx.Button( self, wx.ID_ANY, u"Import", wx.DefaultPosition, wx.DefaultSize, 0 )
-		wSizer1.Add( self.importBtn, 0, wx.ALL, 5 )
+		bSizer4.Add( self.importBtn, 0, wx.ALL, 5 )
+		
+		
+		wSizer1.Add( bSizer4, 1, wx.EXPAND, 5 )
 		
 		
 		self.SetSizer( wSizer1 )
